@@ -1,0 +1,8 @@
+
+P0)	 select nombres, apellido_p, total from uchile.transparencia where apellido_p = 'Mackinnon' order by total asc;
+
+	select nombre,nota from nota.BdD2018 where nombre = 'Cherubini Fouilloux, Jean Franco' or nombre= 'Urbina Lara, Claudio Isaias';
+
+P2) No es seguro contra inyecciones. '; update nota.BdD2018 set nota=7 where nombre='Urbina Lara, Claudio Isaias' or nombre='Cherubini Fouilloux, Jean Franco'; select total from uchile.transparencia where apellido_p='Mackinnon
+
+P3) ' UNION SELECT p.nombre, p.nombre, p.nombre, p.nota, p.nota, p.nota FROM nota.BdD2018 p WHERE p.nombre = 'Urbina Lara, Claudio Isaias' or p.nombre='Cherubini Fouilloux, Jean Franco' UNION SELECT nombre, nombre, nombre, nota, nota, nota FROM nota.BdD2018 WHERE nombre = 'Claudio Urbina' or nombre='Jean Cherubini

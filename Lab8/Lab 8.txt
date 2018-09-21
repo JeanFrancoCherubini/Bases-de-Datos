@@ -1,0 +1,158 @@
+cc3201@cc3201.dcc.uchile.cl
+P1)
+A)	SELECT  p_anho, p_nombre, count(a.genero) AS Actrices,count(b.genero) AS Actores
+		FROM lab8_b.persONaje
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='F') a ON a_nombre = a.nombre		
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='M') b ON a_nombre = b.nombre
+		GROUP BY(p_anho, p_nombre)
+		ORDER BY Actores ASC;
+	
+	EXPLAIN ANALYZE SELECT  p_anho, p_nombre, count(a.genero) AS Actrices,count(b.genero) AS Actores
+		FROM lab8_b.persONaje
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='F') a ON a_nombre = a.nombre		
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='M') b ON a_nombre = b.nombre
+		GROUP BY(p_anho, p_nombre)
+		ORDER BY Actores ASC;
+		
+		Sort  (cost=44623.96..44717.05 rows=37237 width=34) (actual time=7262.983..7282.412 rows=6401 loops=1)
+		   Sort Key: (count(actor_1.genero))
+		   Sort Method: quicksort  Memory: 718kB
+		   ->  HashAggregate  (cost=41424.47..41796.85 rows=37237 width=34) (actual time=7237.038..7241.814 rows=6401 loops=1)
+				 Group Key: personaje.p_anho, personaje.p_nombre
+				 ->  Hash Left Join  (cost=10981.71..37700.81 rows=372367 width=22) (actual time=1268.065..6051.507 rows=372367 loops=1)
+					   Hash Cond: ((personaje.a_nombre)::text = (actor_1.nombre)::text)
+					   ->  Hash Left Join  (cost=4889.21..21141.34 rows=372367 width=36) (actual time=503.681..3169.378 rows=372367 loops=1)
+							 Hash Cond: ((personaje.a_nombre)::text = (actor.nombre)::text)
+							 ->  Seq Scan on personaje  (cost=0.00..7406.67 rows=372367 width=34) (actual time=0.012..842.053 rows=372367 loops=1)
+							 ->  Hash  (cost=3680.24..3680.24 rows=65838 width=18) (actual time=503.344..503.344 rows=66928 loops=1)
+								   Buckets: 65536  Batches: 2  Memory Usage: 2175kB
+								   ->  Seq Scan on actor  (cost=0.00..3680.24 rows=65838 width=18) (actual time=0.016..309.575 rows=66928 loops=1)
+										 Filter: (genero = 'F'::bpchar)
+										 Rows Removed by Filter: 130291
+					   ->  Hash  (cost=3680.24..3680.24 rows=131381 width=18) (actual time=764.070..764.070 rows=130291 loops=1)
+							 Buckets: 65536  Batches: 4  Memory Usage: 2127kB
+							 ->  Seq Scan on actor actor_1  (cost=0.00..3680.24 rows=131381 width=18) (actual time=0.153..426.469 rows=130291 loops=1)
+								   Filter: (genero = 'M'::bpchar)
+								   Rows Removed by Filter: 66928
+		 Planning time: 0.725 ms
+		 Execution time: 7285.846 ms
+
+B) CREATE VIEW lab8_p.yoloLab8 AS SELECT  p_anho, p_nombre, count(a.genero) AS Actrices,count(b.genero) AS Actores
+		FROM lab8_b.persONaje
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='F') a ON a_nombre = a.nombre		
+		LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='M') b ON a_nombre = b.nombre
+		GROUP BY(p_anho, p_nombre)
+		ORDER BY Actores ASC;
+		
+		Sort  (cost=44623.96..44717.05 rows=37237 width=34) (actual time=7166.451..7187.354 rows=6401 loops=1)
+		   Sort Key: (count(actor_1.genero))
+		   Sort Method: quicksort  Memory: 718kB
+		   ->  HashAggregate  (cost=41424.47..41796.85 rows=37237 width=34) (actual time=7127.218..7142.718 rows=6401 loops=1)
+				 Group Key: personaje.p_anho, personaje.p_nombre
+				 ->  Hash Left Join  (cost=10981.71..37700.81 rows=372367 width=22) (actual time=1011.730..5754.525 rows=372367 loops=1)
+					   Hash Cond: ((personaje.a_nombre)::text = (actor_1.nombre)::text)
+					   ->  Hash Left Join  (cost=4889.21..21141.34 rows=372367 width=36) (actual time=379.511..2869.474 rows=372367 loops=1)
+							 Hash Cond: ((personaje.a_nombre)::text = (actor.nombre)::text)
+							 ->  Seq Scan on personaje  (cost=0.00..7406.67 rows=372367 width=34) (actual time=0.012..701.054 rows=372367 loops=1)
+							 ->  Hash  (cost=3680.24..3680.24 rows=65838 width=18) (actual time=379.126..379.126 rows=66928 loops=1)
+								   Buckets: 65536  Batches: 2  Memory Usage: 2175kB
+								   ->  Seq Scan on actor  (cost=0.00..3680.24 rows=65838 width=18) (actual time=0.018..268.641 rows=66928 loops=1)
+										 Filter: (genero = 'F'::bpchar)
+										 Rows Removed by Filter: 130291
+					   ->  Hash  (cost=3680.24..3680.24 rows=131381 width=18) (actual time=631.906..631.906 rows=130291 loops=1)
+							 Buckets: 65536  Batches: 4  Memory Usage: 2127kB
+							 ->  Seq Scan on actor actor_1  (cost=0.00..3680.24 rows=131381 width=18) (actual time=0.154..283.949 rows=130291 loops=1)
+								   Filter: (genero = 'M'::bpchar)
+								   Rows Removed by Filter: 66928
+		 Planning time: 0.737 ms
+		 Execution time: 7191.622 ms
+
+C) CREATE MATERIALIZED VIEW lab8_p.yoloLab8_mat AS SELECT  p_anho, p_nombre, count(a.genero) AS Actrices,count(b.genero) AS Actores
+	  FROM lab8_b.persONaje
+	  LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='F') a ON a_nombre = a.nombre
+	  LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='M') b ON a_nombre = b.nombre
+	  GROUP BY(p_anho, p_nombre)
+	  ORDER BY Actores ASC;
+		
+		 Seq Scan on yololab8_mat  (cost=0.00..116.01 rows=6401 width=34) (actual time=0.011..3.379 rows=6401 loops=1)
+			 Planning time: 0.128 ms
+			 Execution time: 6.544 ms
+
+			 
+P2) 
+A) SELECT x.p_nombre, x.p_anho, count(a.genero) as actrices from(
+		SELECT DISTINCT p_nombre, p_anho FROM lab8_b.personaje
+		WHERE a_nombre = 'Tyler, Liv') p
+	LEFT JOIN lab8_b.personaje x ON x.p_nombre = p.p_nombre and x.p_anho = p.p_anho
+	LEFT JOIN (SELECT * FROM lab8_b.actor WHERE genero='F') a ON x.a_nombre = a.nombre
+	GROUP BY(x.p_nombre, x.p_anho)
+	ORDER BY actrices DESC;
+
+B) EXPLAIN ANALYZE SELECT vis.p_nombre, vis.p_anho, vis.actrices as actrices from(
+		SELECT DISTINCT p_nombre, p_anho FROM lab8_b.personaje
+		WHERE a_nombre = 'Tyler, Liv') p
+	LEFT JOIN lab8_p.yoloLab8 vis ON vis.p_nombre = p.p_nombre and vis.p_anho = p.p_anho
+	ORDER BY actrices DESC;
+
+Sort  (cost=45387.17..45387.18 rows=4 width=26) (actual time=3403.620..3403.636 rows=18 loops=1)
+   Sort Key: (count(actor.genero)) DESC
+   Sort Method: quicksort  Memory: 26kB
+   ->  Hash Right Join  (cost=44642.35..45387.13 rows=4 width=26) (actual time=3385.267..3403.571 rows=18 loops=1)
+         Hash Cond: (((personaje.p_nombre)::text = (personaje_1.p_nombre)::text) AND (personaje.p_anho = personaje_1.p_anho))
+         ->  Sort  (cost=44623.96..44717.05 rows=37237 width=34) (actual time=3384.937..3389.818 rows=6401 loops=1)
+               Sort Key: (count(actor_1.genero))
+               Sort Method: quicksort  Memory: 718kB
+               ->  HashAggregate  (cost=41424.47..41796.85 rows=37237 width=34) (actual time=3362.356..3377.362 rows=6401 loops=1)
+                     Group Key: personaje.p_anho, personaje.p_nombre
+                     ->  Hash Left Join  (cost=10981.71..37700.81 rows=372367 width=22) (actual time=642.618..2754.265 rows=372367 loops=1)
+                           Hash Cond: ((personaje.a_nombre)::text = (actor_1.nombre)::text)
+                           ->  Hash Left Join  (cost=4889.21..21141.34 rows=372367 width=36) (actual time=369.631..1504.041 rows=372367 loops=1)
+                                 Hash Cond: ((personaje.a_nombre)::text = (actor.nombre)::text)
+                                 ->  Seq Scan on personaje  (cost=0.00..7406.67 rows=372367 width=34) (actual time=0.013..348.302 rows=372367 loops=1)
+                                 ->  Hash  (cost=3680.24..3680.24 rows=65838 width=18) (actual time=369.177..369.177 rows=66928 loops=1)
+                                       Buckets: 65536  Batches: 2  Memory Usage: 2175kB
+                                       ->  Seq Scan on actor  (cost=0.00..3680.24 rows=65838 width=18) (actual time=0.022..200.522 rows=66928 loops=1)
+                                             Filter: (genero = 'F'::bpchar)
+                                             Rows Removed by Filter: 130291
+                           ->  Hash  (cost=3680.24..3680.24 rows=131381 width=18) (actual time=272.570..272.570 rows=130291 loops=1)
+                                 Buckets: 65536  Batches: 4  Memory Usage: 2127kB
+                                 ->  Seq Scan on actor actor_1  (cost=0.00..3680.24 rows=131381 width=18) (actual time=0.304..145.544 rows=130291 loops=1)
+                                       Filter: (genero = 'M'::bpchar)
+                                       Rows Removed by Filter: 66928
+         ->  Hash  (cost=18.33..18.33 rows=4 width=18) (actual time=0.107..0.107 rows=18 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Unique  (cost=0.42..18.29 rows=4 width=18) (actual time=0.030..0.081 rows=18 loops=1)
+                     ->  Index Only Scan using personaje_pkey on personaje personaje_1  (cost=0.42..18.27 rows=4 width=18) (actual time=0.027..0.049 rows=18 loops=1)
+                           Index Cond: (a_nombre = 'Tyler, Liv'::text)
+                           Heap Fetches: 18
+ Planning time: 1.415 ms
+ Execution time: 3404.167 ms
+
+C)  EXPLAIN ANALYZE SELECT mat.p_nombre, mat.p_anho, mat.actrices as actrices from(
+		SELECT DISTINCT p_nombre, p_anho FROM lab8_b.personaje
+		WHERE a_nombre = 'Tyler, Liv') p
+	LEFT JOIN lab8_p.yoloLab8_mat mat ON mat.p_nombre = p.p_nombre and mat.p_anho = p.p_anho
+	ORDER BY actrices DESC;
+
+Sort  (cost=182.46..182.47 rows=4 width=26) (actual time=16.755..16.771 rows=18 loops=1)
+   Sort Key: mat.actrices DESC
+   Sort Method: quicksort  Memory: 26kB
+   ->  Hash Right Join  (cost=18.39..182.42 rows=4 width=26) (actual time=0.210..16.716 rows=18 loops=1)
+         Hash Cond: (((mat.p_nombre)::text = (personaje.p_nombre)::text) AND (mat.p_anho = personaje.p_anho))
+         ->  Seq Scan on yololab8_mat mat  (cost=0.00..116.01 rows=6401 width=26) (actual time=0.016..11.939 rows=6401 loops=1)
+         ->  Hash  (cost=18.33..18.33 rows=4 width=18) (actual time=0.073..0.073 rows=18 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Unique  (cost=0.42..18.29 rows=4 width=18) (actual time=0.022..0.059 rows=18 loops=1)
+                     ->  Index Only Scan using personaje_pkey on personaje  (cost=0.42..18.27 rows=4 width=18) (actual time=0.020..0.034 rows=18 loops=1)
+                           Index Cond: (a_nombre = 'Tyler, Liv'::text)
+                           Heap Fetches: 18
+ Planning time: 0.403 ms
+ Execution time: 16.824 ms
+
+Se añadieron 3 indices: 
+
+ create index nombre_b on lab8_p.yoloLab8_mat using btree(p_nombre);
+ create index anho_b on lab8_p.yoloLab8_mat using btree(p_anho);
+ create index actrices_b on lab8_p.yoloLab8_mat using btree(actrices);
+
+Nuevo query plan:

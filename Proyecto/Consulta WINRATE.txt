@@ -1,0 +1,26 @@
+
+
+#Seleccionar partidas con wins donde jugué la carta antes del turno x:
+SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='me' AND p.result='win';
+
+#Seleccionar partidas con loss donde mi oponente jugo la carta antes del turno x:
+SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='opponent' AND p.result='loss';
+
+#Selecctionar total de Partidas:
+SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id;
+
+
+
+#Cuenta total de partidas:
+SELECT count(*) as cuentaTotal FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id) x;
+
+#Cuenta wins mias:
+SELECT count(*) as cuentaMe FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='me' AND p.result='win') y;
+
+#Cuenta wins de oponente:
+SELECT count(*) as cuentaOpponent FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='opponent' AND p.result='loss') z;
+
+
+#Counsulta WINRATE:
+
+SELECT (cuentaMe+cuentaOpponent)/cuentaTotal::float as Winrate from (SELECT count(*) as cuentaTotal FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id) x) a, (SELECT count(*) as cuentaMe FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='me' AND p.result='win') y) b, (SELECT count(*) as cuentaOpponent FROM (SELECT DISTINCT p.result,p.match_id,h.player,h.turn FROM partidas p, historialpartidas h, (SELECT card_id,name FROM proyectohs.cards WHERE name='Palabra de poder: Gloria') c WHERE h.match_id=p.match_id AND h.turn<7 AND c.card_id=h.card_id AND h.player='opponent' AND p.result='loss') z) c;

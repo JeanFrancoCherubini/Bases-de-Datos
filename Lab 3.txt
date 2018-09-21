@@ -1,0 +1,19 @@
+P1) SELECT * FROM lab3.pelicula WHERE anho BETWEEN 1980 AND 1989 ORDER BY calificacion DESC;
+
+P2) SELECT personaje FROM lab3.personaje WHERE a_nombre='De Niro, Robert' ORDER BY p_anho ASC;
+
+P3) SELECT * FROM lab3.pelicula WHERE nombre IN (SELECT p_nombre FROM lab3.personaje WHERE a_nombre='De Niro, Robert') ORDER BY calificacion DESC;
+
+P4) SELECT personaje FROM lab3.personaje WHERE a_nombre IN (SELECT nombre FROM lab3.actor WHERE genero='F') AND p_nombre IN (SELECT nombre FROM lab3.pelicula WHERE calificacion>8.7);
+
+P5) SELECT * FROM lab3.pelicula WHERE nombre LIKE 'The Lord of the Rings%' ORDER BY calificacion, anho;
+
+P6) SELECT DISTINCT p1.a_nombre AS pelicula FROM lab3.personaje p1, lab3.personaje p2 WHERE p1.p_nombre=p2.p_nombre AND p1.a_nombre=p2.a_nombre AND NOT p1.personaje=p2.personaje;
+
+P7) SELECT DISTINCT p1.p_nombre AS pelicula FROM lab3.personaje p1, lab3.personaje p2 WHERE p1.p_nombre = p2.p_nombre AND p1.a_nombre = 'Thurman, Uma' AND p2.a_nombre = 'Jackson, Samuel L.';
+
+P8) SELECT p_nombre FROM lab3.personaje WHERE a_nombre = 'Thurman, Uma' EXCEPT SELECT DISTINCT p_nombre FROM lab3.personaje WHERE a_nombre = 'Jackson, Samuel L.';
+
+P9) SELECT DISTINCT p1.a_nombre, p2.a_nombre FROM lab3.personaje p1, lab3.personaje p2 WHERE p1.p_nombre = p2.p_nombre AND NOT p1.a_nombre = p2.a_nombre;
+
+P10) SELECT * FROM lab3.pelicula ORDER BY calificacion DESC LIMIT 1;

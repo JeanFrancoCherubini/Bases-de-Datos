@@ -1,0 +1,21 @@
+Clave DCC: phi osudo tejo viese miel
+
+P1) SELECT DISTINCT COUNT(nombre) AS conteo FROM lab3.actor;
+
+P2) SELECT nombre FROM lab3.pelicula ORDER BY calificacion DESC LIMIT 10;
+
+P3) SELECT a_nombre FROM (SELECT a_nombre,COUNT(DISTINCT p_nombre) AS conteopeliculas FROM lab3.personaje GROUP BY a_nombre) x, lab3.actor a WHERE x.a_nombre=a.nombre AND genero='F' AND conteopeliculas>=2 ORDER BY conteopeliculas DESC;
+
+P4) SELECT anho FROM (SELECT anho,avg(calificacion) AS promedio FROM lab3.pelicula GROUP BY anho HAVING EVERY(calificacion>8)) x ORDER BY x.promedio DESC;
+
+P5) SELECT decada*10 AS decada, cantidad_peliculas FROM (SELECT anho/10 AS decada, count(anho/10) AS cantidad_peliculas FROM lab3.pelicula GROUP BY anho/10 ORDER BY anho/10 DESC) x;
+
+P6) SELECT p_nombre FROM (SELECT p_nombre, count(a_nombre) AS cant_actores FROM lab3.personaje WHERE a_nombre IN (SELECT nombre FROM lab3.actor WHERE genero='F') GROUP BY p_nombre) y WHERE y.cant_actores IN (SELECT MAX(cant_actores) FROM (SELECT p_nombre, count(a_nombre) AS cant_actores FROM lab3.personaje WHERE a_nombre IN (SELECT nombre FROM lab3.actor WHERE genero='F') GROUP BY p_nombre) x);
+
+P7) select x.SW5, y.SW7 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') x, (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') y where x.SW5=y.SW7 union select SW5,null as SW5 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') z union select null,SW7 from (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') w;
+
+P8) select SW5 as actores from (select x.SW5, y.SW7 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') x, (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') y where x.SW5=y.SW7 union select SW5,null as SW5 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') z union select null,SW7 from (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') w) a where a.SW5 is not Null and a.SW7 is null union select SW7 as actores from (select x.SW5, y.SW7 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') x, (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') y where x.SW5=y.SW7 union select SW5,null as SW5 from (select distinct a_nombre as SW5 from lab3.personaje where p_nombre='Star Wars: Episode V - The Empire Strikes Back') z union select null,SW7 from (select distinct a_nombre as SW7 from lab3.personaje where p_nombre='Star Wars: Episode VI - Return of the Jedi') w) b where b.SW5 is Null and b.SW7 is not null;
+
+
+P9) SELECT x.p_nombre, CAST(x.cant_actrices AS float) / CAST(y.cant_actores AS float) AS razon FROM (SELECT p_nombre, count(a_nombre) AS cant_actrices FROM lab3.personaje WHERE a_nombre IN (SELECT nombre FROM lab3.actor WHERE genero='F') GROUP BY p_nombre) x, ( SELECT p_nombre, count(a_nombre) AS cant_actores FROM lab3.personaje WHERE a_nombre IN (SELECT nombre FROM lab3.actor) GROUP BY p_nombre) y WHERE x.p_nombre = y.p_nombre ORDER BY razon DESC;
+

@@ -1,0 +1,21 @@
+P1 //province/@name
+
+P2 //province//city//name
+
+P3 //province//city//name/text()
+
+P4 //country[@name='Chile']
+
+P5 //province[@name='Ceara']//city//name/text()
+
+P6 //province[@name='Ontario']//city[4]//name/text()
+
+P7 //province[@name='Guanajuato']//city[last()-2]//name/text()
+
+P8 //city[normalize-space(name/text())="Port-au-Prince"]//population/text()
+
+P9 
+
+P10 //city[population>2000000]/ancestor::country//name/text()
+
+P11 

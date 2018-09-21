@@ -1,0 +1,112 @@
+P1) llave: {nombre,anho,actor,personaje}
+	dependencias: {actor}->{género}
+			{nombre,anho}->{calificacion,estudio,ciudad}
+
+P2) select p1.actor as actor1,p1.genero as genero1, p2.actor as actor2, p2.genero as genero2 from lab5.pelicula p1, lab5.pelicula p2 where p1.actor=p2.actor AND p1.genero<>p2.genero;
+
+    select p1.nombre,p1.anho,p1.calificacion,p1.estudio,p1.ciudad, p2.nombre,p2.anho,p2.calificacion,p2.estudio,p2.ciudad from lab5.pelicula p1, lab5.pelicula p2 where p1.nombre=p2.nombre and p1.anho=p2.anho and (p1.calificacion <> p2.calificacion or p1.estudio <> p2.estudio or  p1.ciudad <> p2.ciudad);
+
+P3) No, por que se cumplen las dependencias relacionales anteriores, ya no es 2FN.
+
+P4) 	create table lab5_p.yolo_2FN_tabla1(
+		nombre VARCHAR (255),
+		anho SMALLINT,
+		actor VARCHAR (255), personaje VARCHAR (255),
+		FOREIGN KEY (nombre,anho) REFERENCES lab5_p.yolo_2FN_tabla3 (nombre,anho),
+		FOREIGN KEY (actor) REFERENCES lab5_p.yolo_2FN_tabla2 (actor),
+		PRIMARY KEY (nombre, anho, actor, personaje));
+
+	insert into lab5_p.yolo_2FN_tabla1 select nombre,anho,actor,personaje from lab5.pelicula;
+
+	create table lab5_p.yolo_2FN_tabla2(
+		actor VARCHAR (255) PRIMARY KEY,
+		genero CHAR);
+
+	insert into lab5_p.yolo_2FN_tabla2 select distinct actor,genero from lab5.pelicula;
+
+	create table lab5_p.yolo_2FN_tabla3(
+		nombre VARCHAR (255),
+		anho SMALLINT,
+		calificacion SMALLINT, 
+		estudio VARCHAR (255), 
+		ciudad VARCHAR (255),
+		PRIMARY KEY (nombre,anho));
+
+	insert into lab5_p.yolo_2FN_tabla3 select distinct nombre,anho,calificacion,estudio,ciudad from lab5.pelicula;
+
+
+P5) Existe una nueva dependencia funcional, pues ahora {estudio}->{ciudad}. Si se mantiene la 2FN pues no existe problema con la condición de 1FN ni se puede determinar funcionalmente un conjunto de atributos no primos utilizando un subconjunto propio de la llave definida (pues se tendría que añadir "estudio" al primer conjunto, por ejemplo). El problema si existe para poder cumplir con la restriccion de la 3FN pues se puede utilizar un conjunto de atributos X para determinar funcionalmente un conjunto Y (tal que Y no determina a X), y que además Y determina a un atributo que no es primo ni pertenece a Y.
+
+Para dejarlo expresado claramente, existe por ejemplo {nombre,anho,estudio}->{estudio}->{ciudad}
+
+
+P6) select p1.estudio, p1.ciudad, p2.estudio, p2.ciudad from lab5.pelicula p1, lab5.pelicula p2 where p1.estudio=p2.estudio AND p1.ciudad<>p2.ciudad;
+
+
+
+P7) create table lab5_p.yolo_3FN_tabla1(
+		estudio VARCHAR (255),
+		ciudad VARCHAR (255),
+
+		PRIMARY KEY (estudio));
+
+
+
+	insert into lab5_p.yolo_3FN_tabla1 select distinct estudio,ciudad from lab5.pelicula;
+
+
+
+
+	create table lab5_p.yolo_3FN_tabla2(
+
+		nombre VARCHAR (255),
+
+		anho SMALLINT,
+
+		calificacion SMALLINT,
+ 
+		estudio VARCHAR (255),
+ 
+		FOREIGN KEY (estudio) REFERENCES lab5_p.yolo_3FN_tabla1 (estudio),
+
+		PRIMARY KEY (nombre,anho));
+
+
+	
+	insert into lab5_p.yolo_3FN_tabla2 select distinct nombre,anho,calificacion,estudio from lab5.pelicula;
+
+
+
+	
+	create table lab5_p.yolo_3FN_tabla3(
+
+		nombre VARCHAR (255),
+
+		anho SMALLINT,
+
+		actor VARCHAR (255),
+
+		personaje VARCHAR (255),
+		FOREIGN KEY (nombre,anho) REFERENCES lab5_p.yolo_2FN_tabla3 (nombre,anho),
+
+		FOREIGN KEY (actor) REFERENCES lab5_p.yolo_2FN_tabla2 (actor),
+
+		PRIMARY KEY (nombre, anho, actor, personaje));
+
+
+
+	insert into lab5_p.yolo_3FN_tabla3 select nombre,anho,actor,personaje from lab5.pelicula;
+
+
+
+
+	create table lab5_p.yolo_3FN_tabla4(
+
+		actor VARCHAR (255) PRIMARY KEY,
+
+		genero CHAR);
+
+
+
+
+	insert into lab5_p.yolo_3FN_tabla4 select distinct actor, genero from lab5.pelicula;

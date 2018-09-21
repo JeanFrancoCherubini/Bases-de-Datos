@@ -1,0 +1,3 @@
+host: cc3201@cc3201.dcc.uchile.cl
+puerto: 218
+contraseña: ei3Eca7onieW4quae9su

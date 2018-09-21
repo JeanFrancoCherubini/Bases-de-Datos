@@ -1,0 +1,132 @@
+          Table "proyectohs.cards25252"
+   Column    |          Type          | Modifiers
+-------------+------------------------+-----------
+ attack      | smallint               |
+ playerclass | character varying(255) |
+ cost        | smallint               |
+ dbfld       | bigint                 |
+ health      | smallint               |
+ card_id     | character varying(255) | not null
+ name        | character varying(255) |
+ rarity      | character varying(255) |
+ set         | character varying(255) |
+ type        | character varying(255) |
+ artist      | character varying(255) |
+ collectible | boolean                |
+ text        | character varying(255) |
+ mechanics   | character varying(255) |
+ race        | character varying(255) |
+ durability  | smallint               |
+Indexes:
+    "cards25252_pkey" PRIMARY KEY, btree (card_id)
+
+
+              Table "proyectohs.decks"
+     Column     |          Type          | Modifiers
+----------------+------------------------+-----------
+ craft_cost     | character varying(255) |
+ date           | character varying(255) |
+ deck_archetype | character varying(255) |
+ deck_class     | character varying(255) |
+ deck_format    | character varying(255) |
+ deck_id        | bigint                 | not null
+ deck_set       | character varying(255) |
+ deck_type      | character varying(255) |
+ rating         | smallint               |
+ title          | character varying(255) |
+ deck_user      | character varying(255) |
+ card_0         | bigint                 |
+ card_1         | bigint                 |
+ card_2         | bigint                 |
+ card_3         | bigint                 |
+ card_4         | bigint                 |
+ card_5         | bigint                 |
+ card_6         | bigint                 |
+ card_7         | bigint                 |
+ card_8         | bigint                 |
+ card_9         | bigint                 |
+ card_10        | bigint                 |
+ card_11        | bigint                 |
+ card_12        | bigint                 |
+ card_13        | bigint                 |
+ card_14        | bigint                 |
+ card_15        | bigint                 |
+ card_16        | bigint                 |
+ card_17        | bigint                 |
+ card_18        | bigint                 |
+ card_19        | bigint                 |
+ card_20        | bigint                 |
+ card_21        | bigint                 |
+ card_22        | bigint                 |
+ card_23        | bigint                 |
+ card_24        | bigint                 |
+ card_25        | bigint                 |
+ card_26        | bigint                 |
+ card_27        | bigint                 |
+ card_28        | bigint                 |
+ card_29        | bigint                 |
+Indexes:
+    "decks_pkey" PRIMARY KEY, btree (deck_id)
+
+
+  	Table "proyectohs.entourages"
+   Column    |          Type          | Modifiers
+-------------+------------------------+-----------
+ card_id     | character varying(255) | not null
+ entourage0  | character varying(255) |
+ entourage1  | character varying(255) |
+ entourage2  | character varying(255) |
+ entourage3  | character varying(255) |
+ entourage4  | character varying(255) |
+ entourage5  | character varying(255) |
+ entourage6  | character varying(255) |
+ entourage7  | character varying(255) |
+ entourage8  | character varying(255) |
+ entourage9  | character varying(255) |
+ entourage10 | character varying(255) |
+ entourage11 | character varying(255) |
+ entourage12 | character varying(255) |
+ entourage13 | character varying(255) |
+ entourage14 | character varying(255) |
+ entourage15 | character varying(255) |
+ entourage16 | character varying(255) |
+ entourage17 | character varying(255) |
+ entourage18 | character varying(255) |
+ entourage19 | character varying(255) |
+ entourage20 | character varying(255) |
+ entourage21 | character varying(255) |
+Indexes:
+    "entourages_pkey" PRIMARY KEY, btree (card_id)
+
+
+
+Table "proyectohs.partidas"
+    Column     |          Type          | Modifiers
+---------------+------------------------+-----------
+ match_id      | bigint                 | not null
+ mode          | character varying(255) |
+ hero          | character varying(255) |
+ hero_deck     | character varying(255) |
+ opponent      | character varying(255) |
+ opponent_deck | character varying(255) |
+ coin          | boolean                |
+ result        | character varying(255) |
+Indexes:
+    "partidas_pkey" PRIMARY KEY, btree (match_id)
+
+
+
+
+Table "proyectohs.historialpartidas"
+    Column     |          Type          | Modifiers
+---------------+------------------------+-----------
+ match_id      | bigint                 | not null
+ player        | character varying(255) |
+ turn          | smallint               |
+ card_id       | character varying(255) |
+ player_number | bigint                 | not null
+Indexes:
+    "historialpartidas_pkey" PRIMARY KEY, btree (match_id, player_number)
+
+
+

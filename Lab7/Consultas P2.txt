@@ -1,0 +1,12 @@
+
+
+EXPLAIN ANALYZE SELECT * FROM lab7.personaje100 WHERE p_nombre='Pulp Fiction';
+EXPLAIN ANALYZE SELECT * FROM lab7_index.personaje100 WHERE p_nombre='Pulp Fiction';
+
+
+EXPLAIN ANALYZE SELECT * FROM lab7.personaje1k WHERE p_nombre='Pulp Fiction';
+EXPLAIN ANALYZE SELECT * FROM lab7_index.personaje1k WHERE p_nombre='Pulp Fiction';
+
+
+EXPLAIN ANALYZE SELECT * FROM lab7.personaje10k WHERE p_nombre='Pulp Fiction';
+EXPLAIN ANALYZE SELECT * FROM lab7_index.personaje10k WHERE p_nombre='Pulp Fiction';

@@ -1,0 +1,1 @@
+select deck_class,deck_archetype,count(*) as cantidadDeBarajas,avg(rating) as ratingpromedio from proyectohs.decks where date between '2016-03-01' and '2017-03-01' group by deck_class,deck_archetype order by ratingpromedio desc;

@@ -1,0 +1,10 @@
+https://www.kaggle.com/thebrownviking20/exploring-the-hearthstone-data
+
+
+- barajas que incluyen carta X
+
+- winrate dado que se jugó x carta antes de determinado y turno
+
+- cuantas barajas contienen x carta separadas por clase
+
+- cuantas barajas por clase existen cada año

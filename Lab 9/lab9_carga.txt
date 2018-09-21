@@ -1,0 +1,78 @@
+CREATE TABLE lab9p.cherubini_urbina_Estado (
+    	nombre varchar (255),
+	voto_electoral smallint,
+	cierre time,
+	num_candidatos smallint,
+	reportado float,
+	PRIMARY KEY (nombre)
+);
+
+INSERT INTO lab9p.cherubini_urbina_Estado SELECT * FROM lab9.Estado;
+
+CREATE TABLE lab9p.cherubini_urbina_Condado (
+    	nombre varchar (255),
+	estado varchar (255),
+	reportado float,
+	PRIMARY KEY (nombre, estado),
+	FOREIGN KEY (estado) REFERENCES lab9p.cherubini_urbina_estado (nombre),
+	CHECK (1 >= reportado AND reportado >= 0)
+);
+
+INSERT INTO lab9p.cherubini_urbina_Condado SELECT * FROM lab9.Condado;
+
+CREATE TABLE lab9p.cherubini_urbina_Candidato (
+    	nombre varchar (255),
+	partido varchar (255),
+	PRIMARY KEY (nombre)
+);
+
+INSERT INTO lab9p.cherubini_urbina_Candidato SELECT * FROM lab9.Candidato;
+
+CREATE TABLE lab9p.cherubini_urbina_VotosPorCondado (
+    	candidato varchar (255),
+	condado varchar (255),
+	estado varchar (255),
+    	votos int,
+	PRIMARY KEY (candidato, condado, estado),
+	FOREIGN KEY (candidato) REFERENCES lab9p.cherubini_urbina_candidato (nombre),
+	FOREIGN KEY (condado, estado) REFERENCES lab9p.cherubini_urbina_condado (nombre, estado)
+);
+
+INSERT INTO lab9p.cherubini_urbina_VotosPorCondado SELECT * FROM lab9.VotosPorCondado;
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.voto1 x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+COMMIT; 
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado FROM lab9.condado1 x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT; 
+
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.voto2 x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado FROM lab9.condado2 x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT;
+
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.voto3 x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado FROM lab9.condado3 x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT;
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.voto4 x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado FROM lab9.condado4 x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT;
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.voto5 x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado FROM lab9.condado5 x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT;
+
+
+
+START TRANSACTION;
+	UPDATE lab9p.cherubini_urbina_VotosPorCondado y SET votos = x.votos FROM lab9.votoX x where y.candidato = x.candidato and y.condado = x.condado and y.estado = x.estado;
+	UPDATE lab9p.cherubini_urbina_Condado y SET reportado = x.reportado/100 FROM lab9.condadoX x where y.nombre = x.nombre and y.estado = x.estado;
+COMMIT;

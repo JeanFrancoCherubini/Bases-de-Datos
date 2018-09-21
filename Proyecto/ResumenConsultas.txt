@@ -1,0 +1,24 @@
+Recopilacion de Consultas
+
+Elegir carta X por nombre:
+	SELECT name AS nombre,cost AS coste,attack AS ataque ,health AS salud,durability AS durabilidad,playerclass AS clase,rarity AS rareza,race AS raza,text AS habilidad,dbfld,card_id AS id,set,type AS tipo,artist AS artista,collectible AS coleccionable,mechanics AS mecanicas 
+	FROM proyectohs.cards WHERE UPPER(name) LIKE UPPER('?');
+
+Ver cantidad de barajas por clase de fecha X a fecha Y, por ejemplo 2017-03-01
+	SELECT deck_class as claseBaraja,deck_archetype as arquetipo,COUNT(*) AS cantidadDeBarajas,avg(rating) AS ratingpromedio 
+	FROM proyectohs.decks WHERE date BETWEEN ? AND ? GROUP BY deck_class,deck_archetype 
+	ORDER BY ratingpromedio DESC;
+
+Ver en cuantas barajas aparece una carta X
+	SELECT DISTINCT x.name as nombre, deck_class as Clase,count(*) AS cantidadDeBarajas FROM proyectohs.vistaCartasBaraja,(SELECT name,dbfld FROM proyectohs.cards WHERE UPPER(name) LIKE UPPER('%antonidas%')) x WHERE 
+		x.dbfld=CARD_0 OR x.dbfld=CARD_1 OR	x.dbfld=CARD_2 OR x.dbfld=CARD_3 OR	x.dbfld=CARD_4 OR
+		x.dbfld=CARD_5 OR x.dbfld=CARD_6 OR	x.dbfld=CARD_7 OR x.dbfld=CARD_8 OR	x.dbfld=CARD_9 OR
+		x.dbfld=CARD_10 OR x.dbfld=CARD_11 OR x.dbfld=CARD_12 OR x.dbfld=CARD_13 OR x.dbfld=CARD_14 OR
+		x.dbfld=CARD_15 OR	x.dbfld=CARD_16 OR	x.dbfld=CARD_17 OR	x.dbfld=CARD_18 OR
+		x.dbfld=CARD_19 OR	x.dbfld=CARD_20 OR	x.dbfld=CARD_21 OR	x.dbfld=CARD_22 OR
+		x.dbfld=CARD_23 OR	x.dbfld=CARD_24 OR	x.dbfld=CARD_25 OR	x.dbfld=CARD_26 OR
+		x.dbfld=CARD_27 OR	x.dbfld=CARD_28 OR	x.dbfld=CARD_29 
+		GROUP BY (x.name,deck_class) ORDER BY conteo DESC;
+		
+Ver Winrate de jugar una carta X antes de Turno Y:
+	SELECT d.name AS nombre,d.partidasTotales, (f.ganadasPorMi+e.ganadasPorOponente)/d.partidasTotales::float AS Winrate FROM (SELECT z.name,count(*) AS PartidasTotales FROM (SELECT DISTINCT c.name,v.result,v.match_id,v.player,v.turn FROM proyectohs.vistaPartidas v, (SELECT card_id,name FROM proyectohs.cards WHERE UPPER(name) LIKE UPPER('%archimago%')) c WHERE v.turn<10 AND c.card_id=v.card_id) z group by z.name) d, (SELECT y.name,count(*) AS GanadasPorOponente FROM (SELECT DISTINCT c.name,v.result,v.match_id,v.player,v.turn FROM proyectohs.vistaPartidas v, (SELECT card_id,name FROM proyectohs.cards WHERE UPPER(name) LIKE UPPER('%archimago%')) c WHERE v.turn<10 AND c.card_id=v.card_id AND v.player='opponent' AND v.result='loss') y group by y.name) e, (SELECT x.name,count(*) AS ganadasPorMi FROM (SELECT DISTINCT c.name,v.result,v.match_id,v.player,v.turn FROM proyectohs.vistaPartidas v, (SELECT card_id,name FROM proyectohs.cards WHERE UPPER(name) LIKE UPPER('%archimago%')) c WHERE v.turn<10 AND c.card_id=v.card_id AND v.player='me' AND v.result='win') x group by x.name) f where d.name=e.name AND e.name=f.name AND d.name=f.name; 

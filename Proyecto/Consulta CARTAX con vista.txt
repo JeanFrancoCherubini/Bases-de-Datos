@@ -1,0 +1,89 @@
+﻿CREATE MATERIALIZED VIEW vistaCartasBaraja AS SELECT deck_class,CARD_0,CARD_1,CARD_2,CARD_3,CARD_4,CARD_5,CARD_6,CARD_7,
+CARD_8,
+CARD_9,
+CARD_10,
+CARD_11,
+CARD_12,
+CARD_13,
+CARD_14,
+CARD_15,
+CARD_16,
+CARD_17,
+CARD_18,
+CARD_19,
+CARD_20,
+CARD_21,
+CARD_22,
+CARD_23,
+CARD_24,
+CARD_25,
+CARD_26,
+CARD_27,
+CARD_28,
+CARD_29 from proyectohs.decks;
+
+CREATE INDEX indicecarta0 ON vistaCartasBaraja USING btree(CARD_0);
+CREATE INDEX indicecarta1 ON vistaCartasBaraja USING btree(CARD_1);
+CREATE INDEX indicecarta2 ON vistaCartasBaraja USING btree(CARD_2);
+CREATE INDEX indicecarta3 ON vistaCartasBaraja USING btree(CARD_3);
+CREATE INDEX indicecarta4 ON vistaCartasBaraja USING btree(CARD_4);
+CREATE INDEX indicecarta5 ON vistaCartasBaraja USING btree(CARD_5);
+CREATE INDEX indicecarta6 ON vistaCartasBaraja USING btree(CARD_6);
+CREATE INDEX indicecarta7 ON vistaCartasBaraja USING btree(CARD_7);
+CREATE INDEX indicecarta8 ON vistaCartasBaraja USING btree(CARD_8);
+CREATE INDEX indicecarta9 ON vistaCartasBaraja USING btree(CARD_9);
+CREATE INDEX indicecarta10 ON vistaCartasBaraja USING btree(CARD_10);
+CREATE INDEX indicecarta11 ON vistaCartasBaraja USING btree(CARD_11);
+CREATE INDEX indicecarta12 ON vistaCartasBaraja USING btree(CARD_12);
+CREATE INDEX indicecarta13 ON vistaCartasBaraja USING btree(CARD_13);
+CREATE INDEX indicecarta14 ON vistaCartasBaraja USING btree(CARD_14);
+CREATE INDEX indicecarta15 ON vistaCartasBaraja USING btree(CARD_15);
+CREATE INDEX indicecarta16 ON vistaCartasBaraja USING btree(CARD_16);
+CREATE INDEX indicecarta17 ON vistaCartasBaraja USING btree(CARD_17);
+CREATE INDEX indicecarta18 ON vistaCartasBaraja USING btree(CARD_18);
+CREATE INDEX indicecarta19 ON vistaCartasBaraja USING btree(CARD_19);
+CREATE INDEX indicecarta20 ON vistaCartasBaraja USING btree(CARD_20);
+CREATE INDEX indicecarta21 ON vistaCartasBaraja USING btree(CARD_21);
+CREATE INDEX indicecarta22 ON vistaCartasBaraja USING btree(CARD_22);
+CREATE INDEX indicecarta23 ON vistaCartasBaraja USING btree(CARD_23);
+CREATE INDEX indicecarta24 ON vistaCartasBaraja USING btree(CARD_24);
+CREATE INDEX indicecarta25 ON vistaCartasBaraja USING btree(CARD_25);
+CREATE INDEX indicecarta26 ON vistaCartasBaraja USING btree(CARD_26);
+CREATE INDEX indicecarta27 ON vistaCartasBaraja USING btree(CARD_27);
+CREATE INDEX indicecarta28 ON vistaCartasBaraja USING btree(CARD_28);
+CREATE INDEX indicecarta29 ON vistaCartasBaraja USING btree(CARD_29);
+
+
+
+SELECT DISTINCT deck_class as Clase,count(*) AS conteo FROM proyectohs.vistaCartasBaraja,(SELECT dbfld FROM proyectohs. WHERE name='Acaparador de botín') x WHERE 
+x.dbfld=CARD_0 OR
+x.dbfld=CARD_1 OR
+x.dbfld=CARD_2 OR
+x.dbfld=CARD_3 OR
+x.dbfld=CARD_4 OR
+x.dbfld=CARD_5 OR
+x.dbfld=CARD_6 OR
+x.dbfld=CARD_7 OR
+x.dbfld=CARD_8 OR
+x.dbfld=CARD_9 OR
+x.dbfld=CARD_10 OR
+x.dbfld=CARD_11 OR
+x.dbfld=CARD_12 OR
+x.dbfld=CARD_13 OR
+x.dbfld=CARD_14 OR
+x.dbfld=CARD_15 OR
+x.dbfld=CARD_16 OR
+x.dbfld=CARD_17 OR
+x.dbfld=CARD_18 OR
+x.dbfld=CARD_19 OR
+x.dbfld=CARD_20 OR
+x.dbfld=CARD_21 OR
+x.dbfld=CARD_22 OR
+x.dbfld=CARD_23 OR
+x.dbfld=CARD_24 OR
+x.dbfld=CARD_25 OR
+x.dbfld=CARD_26 OR
+x.dbfld=CARD_27 OR
+x.dbfld=CARD_28 OR
+x.dbfld=CARD_29 group by (deck_class) order by conteo desc;
+
